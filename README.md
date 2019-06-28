@@ -17,4 +17,4 @@ How to run:
     _**npm start**_
 1. run post call on below url using postman or any rest client:
     _**http://localhost:3000/generateall**_
-
+3. Check if post returns success and pdfs are generated in _**receipts**_ folder
