@@ -1,0 +1,30 @@
+{
+  "name": "testexpress",
+  "version": "1.0.0",
+  "description": "Testing express features",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js --exec babel-node -e js"
+  },
+  "author": "Ajay Yadav",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-0": "^6.24.1"
+  },
+  "dependencies": {
+    "convert-csv-to-json": "0.0.15",
+    "express": "^4.17.1",
+    "pdf-lib": "^0.6.3",
+    "sha256-file": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhayanak/apartment.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bhayanak/apartment/issues"
+  },
+  "homepage": "https://github.com/bhayanak/apartment#readme"
+}

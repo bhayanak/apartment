@@ -1,0 +1,33 @@
+body {
+    background-color: rgb(224, 235, 245);
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.head {    
+    text-align: left;
+}
+
+.meta-body-value{
+    border: none;
+    border-bottom: 2px solid rgb(173, 173, 243);
+}
+
+.meta-body-charge{
+    border: 2px solid rgb(173, 173, 243);  
+    border-radius: 4px; 
+}
+
+.mode{
+    text-align: left;
+}
+
+.remarks{
+    text-align: left;
+}
+
+#remark{
+    text-align: left;
+    border-bottom: 2px solid rgb(173, 173, 243);
+    width: 100%;
+}
