@@ -49,9 +49,9 @@ function EditPdf(details) {
 		drawText(helveticaFont.encodeText(details.get('receiptno').toString()), {
 			x: 200,
 			y: 480,
-			size: 20,
+			size: 25,
 			font: 'Helvetica',
-			colorRgb: [0, 0, 1],
+			colorRgb: [1, 0, 0],
 		}),
 		drawText(helveticaFont.encodeText(details.get('flat').toString()), {
 			x: 160,
@@ -105,7 +105,7 @@ function EditPdf(details) {
 		drawText(helveticaFont.encodeText(details.get('imps').toString()), {
 			x: 330,
 			y: 200,
-			size: 30,
+			size: 20,
 			font: 'Helvetica',
 			colorRgb: [0, 0, 1],
 		}),
@@ -117,7 +117,7 @@ function EditPdf(details) {
 
 	page.addContentStreams(pdfDoc.register(contentStream));
 	const pdfBytes = PDFDocumentWriter.saveToBytes(pdfDoc);
-	const filePath = `${__dirname}/receipts/${details.get('flat').toString()}.pdf`;
+	const filePath = `${__dirname}/receipts/${details.get('flat')}_${details.get('monthof')}.pdf`;
 	fs.writeFileSync(filePath, pdfBytes);
 	sha265sum(filePath)
 	console.log(`PDF file written to: ${filePath} with ${pdfBytes.length} sha256sum: ${sha265sum(filePath)}`);
@@ -140,12 +140,14 @@ function getDetails(receipt, flat, dateof, name, amount, amountwords, monthof, c
 
 function getPdfs() {
 	var row
-	var receipt = 1
+	var receipt = 0
 	for (row of csvdata) {
+		console.log(json5.stringify(row))
 		var line = json5.parse(json5.stringify(row))
 		const paid = line["Paid"]
 		if (paid == "Yes") {
 			const flat = line["Flat No"]
+			const receipt = toArrIndex(flat)+1
 			const dateof = line["Paid On"]
 			const name = line["Name"]
 			const amount = line["Amount Paid"]
@@ -153,7 +155,7 @@ function getPdfs() {
 			var monthof = line["monthof"]
 			console.log(`We found month value before: ${monthof}`)
 			if (ifEmpty(monthof)) {
-				monthof = getMonth(new Date())
+				monthof = `${getMonth(new Date())}-${new Date().getFullYear()}`
 				console.log(`We found month value after: ${monthof}`)
 			}
 
@@ -173,7 +175,6 @@ function getPdfs() {
 			const dataMap = getDetails(receipt, flat, dateof, name, amount, convertNumberToWords(amount + ""), monthof, cash, imps, remarks)
 			EditPdf(dataMap)
 			console.log('Generated suuceefully')
-			receipt++
 		}
 	}
 }
