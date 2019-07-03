@@ -20,6 +20,6 @@ How to run:
 1. run post call on below url using postman or any rest client:
     _**http://localhost:3000/generateall**_
 3. Check if post returns success and pdfs are generated in _**receipts**_ folder
-4. Hashes(sha256sum) will be also generated with flat-numbers and pdf filenames in _**data**_ folder. This file is used when someone else generates PDF or tries to forge/edit PDF.
+4. Hashes(sha256sum) will be also generated with flat-numbers and pdf filenames in _**data**_ folder as filename **<month>-<year>.json** . This file is used when someone else generates PDF or tries to forge/edit PDF.
 
 :smile: :smile:
