@@ -4,14 +4,257 @@ import csvdata from './data/csvjson.json'
 import { PDFDocumentFactory, PDFDocumentWriter, StandardFonts, drawText, drawImage } from 'pdf-lib'
 import fs from 'fs'
 import sha265sum from 'sha256-file'
-import csv2json from 'convert-csv-to-json'
 import json5 from 'json5'
+import path from 'path'
 
 const app = express()
 const PORT = 3000
 
 app.use(express.static('public'))
 app.use('/images', express.static('images'))
+
+var j
+
+var jsonHashes = {
+	"101": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"102": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"103": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"104": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"105": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"106": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"107": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"108": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"109": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"110": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"111": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"201": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"202": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"203": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"204": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"205": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"206": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"207": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"208": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"209": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"210": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"211": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"301": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"302": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"303": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"304": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"305": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"306": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"307": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"308": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"309": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"310": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"311": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"401": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"402": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"403": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"404": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"405": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"406": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"407": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"408": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"409": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"410": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"411": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"501": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"502": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"503": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"504": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"505": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"506": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"507": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"508": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"509": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"510": {
+		"filename": "",
+		"sha256sum": ""
+	},
+	"511": {
+		"filename": "",
+		"sha256sum": ""
+	}
+}
+const monthJsonFile = `./data/${getMonthYear()}.json`
+fs.access(monthJsonFile, fs.F_OK, (err) => {
+	if (err) {
+		console.error(err)
+		createMonthJson()
+		return
+	}
+})
+
+function createMonthJson() {
+	fs.writeFile(monthJsonFile, json5.stringify(jsonHashes, null, 4), 'utf8', (err) => {
+		if (err) {
+			console.error(err)
+			return
+		}
+		console.log("File" + monthJsonFile + " has been created");
+	})
+}
 
 app.get('/', (req, res) => {
 	res.json(data)
@@ -20,7 +263,6 @@ app.get('/', (req, res) => {
 app.get('/:flat', (req, res) => {
 	let flatNo = Number(req.params.flat)
 	res.send(data[toArrIndex(flatNo)])
-	EditPdf(flatNo.toString())
 })
 
 function EditPdf(details) {
@@ -120,8 +362,16 @@ function EditPdf(details) {
 	const filePath = `${__dirname}/receipts/${details.get('flat')}_${details.get('monthof')}.pdf`;
 	fs.writeFileSync(filePath, pdfBytes);
 	sha265sum(filePath)
+	// write sha256sum to json
+	addToMonthJson(details.get('flat').toString(), filePath, sha265sum(filePath))
 	console.log(`PDF file written to: ${filePath} with ${pdfBytes.length} sha256sum: ${sha265sum(filePath)}`);
 }
+
+function addToMonthJson(flat, filePath, sha256sum) {
+	jsonHashes[flat]["filename"] = path.parse(filePath).base
+	jsonHashes[flat]["sha256sum"] = sha256sum
+}
+
 
 function getDetails(receipt, flat, dateof, name, amount, amountwords, monthof, cash, imps, remarks) {
 	const m = new Map()
@@ -147,7 +397,7 @@ function getPdfs() {
 		const paid = line["Paid"]
 		if (paid == "Yes") {
 			const flat = line["Flat No"]
-			const receipt = toArrIndex(flat)+1
+			const receipt = toArrIndex(flat) + 1
 			const dateof = line["Paid On"]
 			const name = line["Name"]
 			const amount = line["Amount Paid"]
@@ -155,7 +405,7 @@ function getPdfs() {
 			var monthof = line["monthof"]
 			console.log(`We found month value before: ${monthof}`)
 			if (ifEmpty(monthof)) {
-				monthof = `${getMonth(new Date())}-${new Date().getFullYear()}`
+				monthof = getMonthYear()
 				console.log(`We found month value after: ${monthof}`)
 			}
 
@@ -177,7 +427,14 @@ function getPdfs() {
 			console.log('Generated suuceefully')
 		}
 	}
+	//Lets write json now
+	fs.writeFileSync(monthJsonFile, json5.stringify(jsonHashes, null, 4));
 }
+
+function getMonthYear() {
+	return `${getMonth(new Date())}-${new Date().getFullYear()}`
+}
+
 
 function getMonth(date) {
 	var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -300,6 +557,10 @@ app.put('/item', (req, res) => {
 	res.send(`Put Request with /item Route on Port ${PORT}`)
 })
 
+
+app.delete('/item', (req, res) => {
+	res.send(`Delete Request with /item Route on Port ${PORT}`)
+})
 
 app.delete('/item', (req, res) => {
 	res.send(`Delete Request with /item Route on Port ${PORT}`)
